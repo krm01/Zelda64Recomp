@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include "recomp.h"
+#include "recomp_helpers.h"
 #include "../RecompiledFuncs/recomp_overlays.inl"
 
 constexpr size_t num_code_sections = ARRLEN(section_table);
@@ -64,6 +65,14 @@ extern "C" void load_overlays(uint32_t rom, int32_t ram_addr, uint32_t size) {
     for (auto it = lower; it != upper; ++it) {
         load_overlay(std::distance(&section_table[0], it), it->rom_addr - rom + ram_addr);
     }
+}
+
+extern "C" void RECOMP_load_overlays_recomp(uint8_t * rdram, recomp_context * ctx) {
+    u32 rom = _arg<0, u32>(rdram, ctx);
+    PTR(void) ram = _arg<1, PTR(void)>(rdram, ctx);
+    u32 size = _arg<2, u32>(rdram, ctx);
+
+    load_overlays(rom, ram, size);
 }
 
 extern "C" void unload_overlays(int32_t ram_addr, uint32_t size);

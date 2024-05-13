@@ -6,9 +6,6 @@
 #include "recomp_ui.h"
 #include "recomp_sound.h"
 #include "recomp_helpers.h"
-#include "../patches/input.h"
-#include "../patches/graphics.h"
-#include "../patches/sound.h"
 #include "../ultramodern/ultramodern.hpp"
 #include "../ultramodern/config.hpp"
 

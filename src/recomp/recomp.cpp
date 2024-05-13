@@ -35,7 +35,7 @@ struct RomEntry {
 };
 
 const std::unordered_map<recomp::Game, RomEntry> game_roms {
-    { recomp::Game::MM, { 0xEF18B4A9E2386169ULL, std::u8string{recomp::mm_game_id} + u8".z64", "ZELDA MAJORA'S MASK" }},
+#include "../../rom_config.h"
 };
 
 bool check_hash(const std::vector<uint8_t>& rom_data, uint64_t expected_hash) {

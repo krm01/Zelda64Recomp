@@ -53,6 +53,3 @@ imgui.ini
 rt64.log
 
 node_modules/
-
-# Recompiler Linux binary
-N64Recomp

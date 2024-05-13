@@ -1,11 +1,60 @@
 #ifndef __RECOMP_H__
 #define __RECOMP_H__
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <math.h>
 #include <assert.h>
 #include <setjmp.h>
 #include <malloc.h>
+
+#if defined(__SIZEOF_INT128__)
+
+typedef __int128 int128_t;
+typedef unsigned __int128 uint128_t;
+
+static inline void DMULT(int64_t a, int64_t b, int64_t * lo64, int64_t * hi64) {
+    int128_t full128 = ((int128_t)a) * ((int128_t)b);
+
+    *hi64 = (int64_t)(full128 >> 64);
+    *lo64 = (int64_t)(full128 >> 0);
+}
+
+static inline void DMULTU(uint64_t a, uint64_t b, uint64_t * lo64, uint64_t * hi64) {
+    uint128_t full128 = ((uint128_t)a) * ((uint128_t)b);
+
+    *hi64 = (uint64_t)(full128 >> 64);
+    *lo64 = (uint64_t)(full128 >> 0);
+}
+
+#elif defined(_MSC_VER)
+
+#include <intrin.h>
+#pragma intrinsic(_mul128)
+#pragma intrinsic(_umul128)
+
+static inline void DMULT(int64_t a, int64_t b, int64_t * lo64, int64_t * hi64) {
+    *lo64 = _mul128(a, b, hi64);
+}
+
+static inline void DMULTU(uint64_t a, uint64_t b, uint64_t * lo64, uint64_t * hi64) {
+    *lo64 = _umul128(a, b, hi64);
+}
+
+#else
+#error "128-bit integer type not found"
+#endif
+
+static inline void DDIV(int64_t a, int64_t b, int64_t * quot, int64_t * rem) {
+    bool overflow = ((uint64_t)a == 0x8000000000000000ull) && (b == -1ll);
+    *quot = overflow ? a : (a / b);
+    *rem = overflow ? 0 : (a % b);
+}
+
+static inline void DDIVU(uint64_t a, uint64_t b, uint64_t * quot, uint64_t * rem) {
+    *quot = a / b;
+    *rem = a % b;
+}
 
 #if 0 // treat GPRs as 32-bit, should be better codegen
 typedef uint32_t gpr;
@@ -26,28 +75,28 @@ typedef uint64_t gpr;
     ((gpr)(int32_t)((a) - (b)))
 
 #define MEM_W(offset, reg) \
-    (*(int32_t*)(rdram + ((((reg) + (offset))) - 0xFFFFFFFF80000000)))
+    (*(int32_t*)(rdram + ((((reg) + (offset))) & 0x1FFFFFFF)))
     //(*(int32_t*)(rdram + ((((reg) + (offset))) & 0x3FFFFFF)))
 
 #define MEM_H(offset, reg) \
-    (*(int16_t*)(rdram + ((((reg) + (offset)) ^ 2) - 0xFFFFFFFF80000000)))
+    (*(int16_t*)(rdram + ((((reg) + (offset)) ^ 2) & 0x1FFFFFFF)))
     //(*(int16_t*)(rdram + ((((reg) + (offset)) ^ 2) & 0x3FFFFFF)))
 
 #define MEM_B(offset, reg) \
-    (*(int8_t*)(rdram + ((((reg) + (offset)) ^ 3) - 0xFFFFFFFF80000000)))
+    (*(int8_t*)(rdram + ((((reg) + (offset)) ^ 3) & 0x1FFFFFFF)))
     //(*(int8_t*)(rdram + ((((reg) + (offset)) ^ 3) & 0x3FFFFFF)))
 
 #define MEM_HU(offset, reg) \
-    (*(uint16_t*)(rdram + ((((reg) + (offset)) ^ 2) - 0xFFFFFFFF80000000)))
+    (*(uint16_t*)(rdram + ((((reg) + (offset)) ^ 2) & 0x1FFFFFFF)))
     //(*(uint16_t*)(rdram + ((((reg) + (offset)) ^ 2) & 0x3FFFFFF)))
 
 #define MEM_BU(offset, reg) \
-    (*(uint8_t*)(rdram + ((((reg) + (offset)) ^ 3) - 0xFFFFFFFF80000000)))
+    (*(uint8_t*)(rdram + ((((reg) + (offset)) ^ 3) & 0x1FFFFFFF)))
     //(*(uint8_t*)(rdram + ((((reg) + (offset)) ^ 3) & 0x3FFFFFF)))
 
 #define SD(val, offset, reg) { \
-    *(uint32_t*)(rdram + ((((reg) + (offset) + 4)) - 0xFFFFFFFF80000000)) = (uint32_t)((gpr)(val) >> 0); \
-    *(uint32_t*)(rdram + ((((reg) + (offset) + 0)) - 0xFFFFFFFF80000000)) = (uint32_t)((gpr)(val) >> 32); \
+    *(uint32_t*)(rdram + ((((reg) + (offset) + 4)) & 0x1FFFFFFF)) = (uint32_t)((gpr)(val) >> 0); \
+    *(uint32_t*)(rdram + ((((reg) + (offset) + 0)) & 0x1FFFFFFF)) = (uint32_t)((gpr)(val) >> 32); \
 }
 
 //#define SD(val, offset, reg) { \
@@ -166,6 +215,18 @@ static inline void do_swr(uint8_t* rdram, gpr offset, gpr reg, gpr val) {
 #define CVT_S_D(val) \
     ((float)(val))
 
+#define CVT_L_D(f) \
+    ((int64_t)(f))
+
+#define CVT_D_L(f) \
+    ((double)(int64_t)(f))
+
+#define CVT_L_S(f) \
+    ((int64_t)(f))
+
+#define CVT_S_L(f) \
+    ((float)(int64_t)(f))
+
 #define TRUNC_W_S(val) \
     ((int32_t)(val))
 
@@ -266,8 +327,16 @@ typedef void (recomp_func_t)(uint8_t* rdram, recomp_context* ctx);
 
 recomp_func_t* get_function(int32_t vram);
 
+#if 0
+#define LOOKUP_FUNC(val) \
+({\
+    printf("    %s %d\n", __FILE__, __LINE__); \
+    get_function((int32_t)(val)); \
+})
+#else
 #define LOOKUP_FUNC(val) \
     get_function((int32_t)(val))
+#endif
 
 extern int32_t section_addresses[];
 

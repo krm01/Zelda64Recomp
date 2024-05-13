@@ -51,7 +51,6 @@ using u32 = uint32_t;
 using s32 = int32_t;
 using u64 = uint64_t;
 using s64 = int64_t;
-using uint128_t = uint64_t[2];
 
 template<u32 bits> inline auto sclamp(s64 x) -> s64 {
   enum : s64 { b = 1ull << (bits - 1), m = b - 1 };
