@@ -26,6 +26,7 @@ constexpr uint32_t drive_base = 0x06000000;
 // that involve physical addresses don't need to be handled for flashram.
 constexpr uint32_t sram_base = 0x08000000;
 constexpr uint32_t rom_base = 0x10000000;
+constexpr uint32_t drive_base = 0x06000000;
 
 constexpr uint32_t k1_to_phys(uint32_t addr) {
     return addr & 0x1FFFFFFF;

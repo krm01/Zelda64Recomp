@@ -98,10 +98,14 @@ This project provides mouse aiming as a way to allow using gyro on Steam Deck, a
 
 You'll probably also want to change the default behavior so that you don't need to be touching the right stick to allow gyro input. To do so, click on the Gear icon to the right of "Gyro Behavior" and ensure that "Gyro Activation Buttons" is set to "None Selected (Gyro Always On)." If this isn't the case, then select that option and then press "Select None" in the following menu.
 
+#### Where is the savefile stored?
+- Windows: `%LOCALAPPDATA%\Zelda64Recompiled\saves`
+- Linux: `~/.config/Zelda64Recompiled/saves`
+
 ## Known Issues
 * The motion blur effect used by the game was capped to prevent ghosting at incredibly high framerates, which causes it to be less noticeable (this is only really noticeable above 120FPS). This may be fixed in the future by offering the option to render to an HDR framebuffer internally, which would allow it to be uncapped.
 * Intel GPUs on Linux may not currently work. If you have experience with Vulkan development on Linux, help here would be greatly appreciated!
-* The prebuilt Linux binary may not work correctly on some distributions of Linux. If you encounter such an issue, building the project locally yourself is recommended. A Flatpak or AppImage may be provided in the future to solve this issue. Alternatively, running the Windows version with Proton is known to work well and may work around this issue.
+* The prebuilt Linux binary may not work correctly on some distributions of Linux. If you encounter such an issue, building the project locally yourself is recommended. A Flatpak or AppImage may be provided in the future to solve this issue. Adding the Linux version to Steam and setting "Steam Linux Runtime" as the compatibility tool or launching it via Gamescope may work around the issue. Alternatively, running the Windows version with Proton is known to work well and may also work around this issue.
 * Overlays such as MSI Afterburner and other software such as Wallpaper Engine can cause performance issues with this project that prevent the game from rendering correctly. Disabling such software is recommended.
 
 ## Building
@@ -117,4 +121,4 @@ Building is not required to play this project, as prebuilt binaries (which do no
 * [Majora's Mask Decompilation](https://github.com/zeldaret/mm) for headers and some function definitions, used for making patches or some enhancements
 * [Ares emulator](https://github.com/ares-emulator/ares) for RSP vector instruction reference implementations, used in RSP recompilation
 
-Special thanks to [thecozies](github.com/thecozies) for designing and helping implement the launcher and config menus!
+Special thanks to [thecozies](https://github.com/thecozies) for designing and helping implement the launcher and config menus!
