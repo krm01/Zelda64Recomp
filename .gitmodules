@@ -10,9 +10,6 @@
 [submodule "lib/lunasvg"]
 	path = lib/lunasvg
 	url = https://github.com/sammycage/lunasvg
-[submodule "lib/indigo"]
-	path = lib/indigo
-	url = git@github.com:Thar0/indigo.git
 [submodule "lib/N64Recomp"]
 	path = lib/N64Recomp
 	url = https://github.com/Thar0/N64Recomp

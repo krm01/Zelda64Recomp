@@ -32,6 +32,9 @@ make -C lib/indigo release $1 RECOMP=1
 # Generate recomp configuration from ELF file
 python3 gen_recomp.py lib/indigo/zelda_ocarina_mq_dbg.elf
 
+chmod +x ./lib/N64Recomp/build/Debug/N64Recomp.exe
+chmod +x ./lib/N64Recomp/build/Debug/RSPRecomp.exe
+
 # Run N64Recomp on the config
 ./lib/N64Recomp/build/Debug/N64Recomp.exe indigo.toml
 
