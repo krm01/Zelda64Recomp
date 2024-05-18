@@ -542,3 +542,14 @@
 ..ovl_Racetrack_Props
 ..ovl_Shotput_Puzzle
 ..ovl_Scardeeda_Tracker
+..ovl_Living_Nut
+..ovl_Metal_Crate
+..ovl_Wall_Pull_Switch
+..ovl_Yeti
+..ovl_Yeti_Props
+..ovl_Chess_Encounter
+..ovl_Yasna
+..ovl_Yasna_Extras
+..ovl_Blizz
+..ovl_Mushman
+..ovl_Oreling
