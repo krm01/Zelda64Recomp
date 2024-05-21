@@ -12,22 +12,22 @@
 # add baserom_original.z64 into lib/indigo
 
 # Build N64Recomp for windows, since it's used in the build process as well
-rm -r lib/N64Recomp/build
-cd lib/N64Recomp
-mkdir -p build
-cd build
-cmake.exe ..
-cmake.exe --build .
-cd ../../../
+#rm -r lib/N64Recomp/build
+#cd lib/N64Recomp
+#mkdir -p build
+#cd build
+#cmake.exe ..
+#cmake.exe --build .
+#cd ../../../
 
 # Ensure clean
-rm -r out build RecompiledFuncs RecompiledPatches indigo.toml aspMain.toml njpgdspMain.toml rsp/aspMain.cpp rsp/aspMain.text.bin rsp/njpgdspMain.cpp rsp/njpgdspMain.text.bin
+#rm -r out build RecompiledFuncs RecompiledPatches indigo.toml aspMain.toml njpgdspMain.toml rsp/aspMain.cpp rsp/aspMain.text.bin rsp/njpgdspMain.cpp rsp/njpgdspMain.text.bin
 
 # Produce an N64 ROM to recompile
-make -C lib/indigo distclean $1
-make -C lib/indigo init $1 RECOMP=1
-make -C lib/indigo psetup $1 RECOMP=1
-make -C lib/indigo release $1 RECOMP=1
+#make -C lib/indigo distclean $1
+#make -C lib/indigo init $1 RECOMP=1
+#make -C lib/indigo psetup $1 RECOMP=1
+#make -C lib/indigo release $1 RECOMP=1
 
 # Generate recomp configuration from ELF file
 python3 gen_recomp.py lib/indigo/zelda_ocarina_mq_dbg.elf

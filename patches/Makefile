@@ -15,7 +15,7 @@ CPPFLAGS := -nostdinc -D_LANGUAGE_C -DMIPS -I dummy_headers -I $(DECOMP_PATH)/in
 LDFLAGS  := -nostdlib -T patches.ld -T syms.ld --just-symbols=$(BASE_ELF) --allow-multiple-definition -Map patches.map
 BINFLAGS := -O binary --remove-section=.bss --remove-section=.pad --remove-section=.text
 
-C_SRCS := __dummy.c #$(wildcard *.c)
+C_SRCS := enable_rt64.c #$(wildcard *.c)
 C_OBJS := $(C_SRCS:.c=.o)
 C_DEPS := $(C_SRCS:.c=.d)
 
