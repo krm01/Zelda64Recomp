@@ -2,6 +2,7 @@
 #include "transform_ids.h"
 #include "global.h"
 #include "vt.h"
+#include "misc_funcs.h"
 
 extern OSTime sGraphUpdateTime;
 extern FaultClient sGraphUcodeFaultClient;
@@ -225,3 +226,21 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         gameState->running = false;
     }
 }
+
+void* proutPrintf(void* dst, const char* fmt, u32 size) {
+    recomp_puts(fmt, size);
+    return (void*)1;
+}
+
+int recomp_printf(const char* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+
+    int ret = _Printf(&proutPrintf, NULL, fmt, args);
+
+    va_end(args);
+
+    return ret;
+}
+
+

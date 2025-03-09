@@ -1,13 +1,7 @@
-#include "patches.h"
-#include "sys_cfb.h"
-#include "buffers.h"
+#include "global.h"
+#include "ultra64.h"
 #include "fault.h"
-#include "audiomgr.h"
-#include "z64speed_meter.h"
-#include "z64vimode.h"
-#include "z64viscvg.h"
-#include "z64vismono.h"
-#include "z64viszbuf.h"
+#include "recomp_patches.h"
 
 void recomp_set_current_frame_poll_id();
 void PadMgr_HandleRetrace(void);
@@ -48,14 +42,17 @@ void PadMgr_HandleRetrace(void) {
     if (gFaultMgr.msgId != 0) {
         // If fault is active, no rumble
         PadMgr_RumbleStop();
-    } else if (sPadMgrInstance->rumbleOffTimer > 0) {
+    }
+    else if (sPadMgrInstance->rumbleOffTimer > 0) {
         // If the rumble off timer is active, no rumble
         --sPadMgrInstance->rumbleOffTimer;
         PadMgr_RumbleStop();
-    } else if (sPadMgrInstance->rumbleOnTimer == 0) {
+    }
+    else if (sPadMgrInstance->rumbleOnTimer == 0) {
         // If the rumble on timer is inactive, no rumble
         PadMgr_RumbleStop();
-    } else if (!sPadMgrInstance->isResetting) {
+    }
+    else if (!sPadMgrInstance->isResetting) {
         // If not resetting, update rumble
         PadMgr_UpdateRumble();
         --sPadMgrInstance->rumbleOnTimer;
@@ -129,7 +126,7 @@ u32 recomp_time_us();
 void recomp_measure_latency();
 void* osViGetCurrentFramebuffer_recomp();
 
-OSMesgQueue *rdp_queue_ptr = NULL;
+OSMesgQueue* rdp_queue_ptr = NULL;
 
 // @recomp Immediately sends the graphics task instead of queueing it in the scheduler.
 void Graph_TaskSet00(GraphicsContext* gfxCtx, GameState* gameState) {
@@ -140,11 +137,11 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx, GameState* gameState) {
     OSTimer timer;
     OSMesg msg;
     CfbInfo* cfb;
-    
+
     // @recomp Additional static members for extra scheduling purposes.
-    static IrqMgrClient irq_client = {0};
-    static OSMesgQueue vi_queue = {0};
-    static OSMesg vi_buf[8] = {0};
+    static IrqMgrClient irq_client = { 0 };
+    static OSMesgQueue vi_queue = { 0 };
+    static OSMesg vi_buf[8] = { 0 };
     static bool created = false;
     if (!created) {
         created = true;
@@ -220,7 +217,8 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx, GameState* gameState) {
         cfb->features = gfxCtx->viConfigFeatures;
         cfb->xScale = gfxCtx->xScale;
         cfb->yScale = gfxCtx->yScale;
-    } else {
+    }
+    else {
         cfb->viMode = NULL;
     }
     cfb->unk_10 = 0;
@@ -235,7 +233,7 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx, GameState* gameState) {
     gfxCtx->schedMsgQ = &gSchedContext.cmdQ;
     osSendMesg(&gSchedContext.cmdQ, scTask, OS_MESG_BLOCK);
     Sched_SendEntryMsg(&gSchedContext);
-    
+
     // @recomp Immediately wait on the task to complete to minimize latency for the next one.
     osRecvMesg(&gfxCtx->queue, &msg, OS_MESG_BLOCK);
 
@@ -246,13 +244,13 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx, GameState* gameState) {
             osRecvMesg(&vi_queue, NULL, OS_MESG_BLOCK);
             viCounter++;
         }
-        
+
         // If we didn't wait the full number of VIs needed between frames then wait one extra VI afterwards.
         if (viCounter < gameState->framerateDivisor) {
             osRecvMesg(&vi_queue, NULL, OS_MESG_BLOCK);
         }
     }
-    
+
     // @recomp Flush any extra messages from the VI queue.
     while (osRecvMesg(&vi_queue, NULL, OS_MESG_NOBLOCK) == 0) {
         ;
