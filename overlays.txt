@@ -553,3 +553,14 @@
 ..ovl_Blizz
 ..ovl_Mushman
 ..ovl_Oreling
+..ovl_Ocolopodo
+..ovl_Ice_Footman
+..ovl_Boss_Scar_Portal
+..ovl_Dic_Props
+..ovl_Hm_Ladder
+..ovl_Spectral_Weapon
+..ovl_Explosion
+..ovl_Gopher
+..ovl_Stone_Serpent
+..ovl_Shell_Barrier
+..ovl_Dugongo
