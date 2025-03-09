@@ -51,8 +51,10 @@ extern "C" void is_proutSyncPrintf_recomp(uint8_t * rdram, recomp_context * ctx)
 
     gpr buf = ctx->r5;
     size_t size = ctx->r6;
+    std::unique_ptr<char[]> to_print = std::make_unique<char[]>(size + 1);
 
-    //for (size_t i = 0; i < size; i++) {
+
+    // for (size_t i = 0; i < size; i++) {
     //    // Add the new character to the buffer
     //    char cur_char = MEM_B(i, buf);
 
@@ -64,9 +66,9 @@ extern "C" void is_proutSyncPrintf_recomp(uint8_t * rdram, recomp_context * ctx)
     //    } else {
     //        print_buffer.push_back(cur_char);
     //    }
-    //}
+    // }
 
-    //fwrite(to_print.get(), size, 1, stdout);
+    // fwrite(to_print.get(), size, 1, stdout);
 
     ctx->r2 = 1;
 }
