@@ -6,10 +6,13 @@ entrypoint = 0x80000400
 elf_path = "lib/indigo/zelda_ocarina_mq_dbg.elf"
 output_func_path = "RecompiledFuncs"
 relocatable_sections_path = "overlays.txt"
+recomp_include = "#include \"recomp.h\""
 
 [patches]
 stubs = [
-    # None
+    "RcpUtils_PrintRegisterStatus",
+    "RcpUtils_Reset",
+    "osDriveRomInit"
 ]
 
 ignored = [

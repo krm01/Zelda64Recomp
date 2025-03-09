@@ -20,7 +20,6 @@ void recomp::set_rom_contents(std::vector<uint8_t>&& new_rom) {
     rom = std::move(new_rom);
 }
 
-constexpr uint32_t drive_base = 0x06000000;
 // Flashram occupies the same physical address as sram, but that issue is avoided because libultra exposes
 // a high-level interface for flashram. Because that high-level interface is reimplemented, low level accesses
 // that involve physical addresses don't need to be handled for flashram.
@@ -150,7 +149,7 @@ void save_write_ptr(const void* in, uint32_t offset, uint32_t count) {
 void save_write(RDRAM_ARG PTR(void) rdram_address, uint32_t offset, uint32_t count) {
     {
         std::lock_guard lock { save_context.save_buffer_mutex };
-        for (uint32_t i = 0; i < count; i++) {
+        for (size_t i = 0; i < count; i++) {
             save_context.save_buffer[offset + i] = MEM_B(i, rdram_address);
         }
     }

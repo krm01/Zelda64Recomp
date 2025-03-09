@@ -9,28 +9,18 @@
 
 # Install git lfs
 # git clone --recurse-submodules ...
-# add baserom_original.z64 into lib/indigo
 
 # Build N64Recomp for windows, since it's used in the build process as well
-# rm -r lib/N64Recomp/build
-# cd lib/N64Recomp
-# mkdir -p build
-# cd build
-# cmake.exe ..
-# cmake.exe --build .
-# cd ../../../
-
-# chmod +x N64Recomp.exe
-# chmod +x RSPRecomp.exe
 
 
-# Ensure clean
+# run from WSL
 rm -r out build RecompiledFuncs RecompiledPatches indigo.toml aspMain.toml njpgdspMain.toml rsp/aspMain.cpp rsp/aspMain.text.bin rsp/njpgdspMain.cpp rsp/njpgdspMain.text.bin
 
 # Produce an N64 ROM to recompile
 # build indigo with `make release RECOMP=1` and then run copy-to-recomp.sh from indigo repo
+# will put the necessary files into lib/indigo/
 
-# activate the python venv
+# activate the python venv if not already
 . .venv/bin/activate
 
 # Generate recomp configuration from ELF file
@@ -43,8 +33,9 @@ python3 gen_recomp.py lib/indigo/zelda_ocarina_mq_dbg.elf
 ./RSPRecomp.exe aspMain.toml
 ./RSPRecomp.exe njpgdspMain.toml
 
-# TODO make this actually work
-# mkdir -p build
-# cd build
-# cmake.exe .. -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -G Ninja
-# cmake.exe --build .
+
+# run these from Powershell
+cmake -S . -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Debug
+cmake --build build --target Zelda64Recompiled -j16 --config Debug
+
+cp -r assets/ build/
