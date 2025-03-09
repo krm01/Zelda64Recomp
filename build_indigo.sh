@@ -24,18 +24,20 @@ rm -r out build RecompiledFuncs RecompiledPatches indigo.toml aspMain.toml njpgd
 . .venv/bin/activate
 
 # Generate recomp configuration from ELF file
-python3 gen_recomp.py lib/indigo/zelda_ocarina_mq_dbg.elf
+./.venv/bin/python3 gen_recomp.py lib/indigo/zelda_ocarina_mq_dbg.elf
 
-# Run N64Recomp on the config
+# Run N64Recomp on the config (yes run twice)
 ./N64Recomp.exe indigo.toml
-
-# Run RSPRecomp on the ucode configs
+./N64Recomp.exe indigo.toml --dump-context
 ./RSPRecomp.exe aspMain.toml
 ./RSPRecomp.exe njpgdspMain.toml
 
+# Run RSPRecomp on the ucode configs
+
+
 
 # run these from Powershell
-cmake -S . -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Debug
-cmake --build build --target Zelda64Recompiled -j16 --config Debug
+# cmake -S . -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G Ninja -DCMAKE_BUILD_TYPE=Debug
+# cmake --build build --target Zelda64Recompiled -j16 --config Debug
 
-cp -r assets/ build/
+# cp -r assets/ build/

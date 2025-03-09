@@ -197,7 +197,8 @@ uint8_t dmem[0x1000];
 uint16_t rspReciprocals[512];
 uint16_t rspInverseSquareRoots[512];
 
-using RspUcodeFunc = RspExitReason(uint8_t* rdram);
+// using RspUcodeFunc = RspExitReason(uint8_t* rdram);
+using RspUcodeFunc = RspExitReason(uint8_t* rdram, uint32_t ucode_addr);
 extern RspUcodeFunc njpgdspMain;
 extern RspUcodeFunc aspMain;
 
@@ -226,7 +227,7 @@ void run_rsp_microcode(uint8_t* rdram, const OSTask* task, RspUcodeFunc* ucode_f
     // Load the ucode data into DMEM
     dma_rdram_to_dmem(rdram, 0x0000, task->t.ucode_data, 0xF80 - 1);
     // Run the ucode
-    RspExitReason exit_reason = ucode_func(rdram);
+    RspExitReason exit_reason = ucode_func(rdram, task->t.ucode);
     // Ensure that the ucode exited correctly
     assert(exit_reason == RspExitReason::Broke);
 }

@@ -1,6 +1,9 @@
 #ifndef __PATCHES_H__
 #define __PATCHES_H__
 
+#define RECOMP_PATCH __attribute__((section(".recomp_patch")))
+
+
 // TODO fix renaming symbols in patch recompilation
 #define osCreateMesgQueue osCreateMesgQueue_recomp
 #define osRecvMesg osRecvMesg_recomp

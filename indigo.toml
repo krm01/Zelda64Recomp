@@ -8,6 +8,10 @@ output_func_path = "RecompiledFuncs"
 relocatable_sections_path = "overlays.txt"
 recomp_include = "#include \"recomp.h\""
 
+# Enable strict patch mode, validates that patched symbols exist and that non-patch functions aren't symbols.
+strict_patch_mode = true
+
+
 [patches]
 stubs = [
     "RcpUtils_PrintRegisterStatus",

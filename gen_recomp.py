@@ -395,6 +395,8 @@ def main(elf_path : str):
 
     # Write Recomp TOML config
 
+# Enable strict patch mode, validates that patched symbols exist and that non-patch functions aren't symbols.
+# strict_patch_mode = true
     TOML = f"""\
 # Config file for "{rom_header.rom_name}" Recompilation.
 
@@ -404,10 +406,17 @@ entrypoint = 0x{rom_header.entrypoint:08X}
 elf_path = "{elf_path}"
 output_func_path = "RecompiledFuncs"
 relocatable_sections_path = "{OVERLAYS_OUTNAME}"
+recomp_include = "#include \\"recomp.h\\""
+
+# Enable strict patch mode, validates that patched symbols exist and that non-patch functions aren't symbols.
+strict_patch_mode = true
+
 
 [patches]
 stubs = [
-    # None
+    "RcpUtils_PrintRegisterStatus",
+    "RcpUtils_Reset",
+    "osDriveRomInit"
 ]
 
 ignored = [

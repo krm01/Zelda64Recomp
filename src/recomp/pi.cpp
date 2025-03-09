@@ -9,6 +9,7 @@
 #include "recomp_config.h"
 #include "../ultramodern/ultra64.h"
 #include "../ultramodern/ultramodern.hpp"
+#include "librecomp/addresses.hpp"
 
 static std::vector<uint8_t> rom;
 
@@ -52,7 +53,7 @@ extern "C" void osCartRomInit_recomp(uint8_t* rdram, recomp_context* ctx) {
 extern "C" void osDriveRomInit_recomp(uint8_t * rdram, recomp_context * ctx) {
     OSPiHandle* handle = TO_PTR(OSPiHandle, ultramodern::drive_handle);
     handle->type = 1; // bulk
-    handle->baseAddress = phys_to_k1(drive_base);
+    handle->baseAddress = phys_to_k1(recomp::drive_base);
     handle->domain = 0;
 
     ctx->r2 = (gpr)ultramodern::drive_handle;

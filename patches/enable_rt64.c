@@ -23,7 +23,7 @@ typedef struct {
 
 BiggerGfxPool gBiggerGfxPools[2];
 
-void Graph_InitTHGA(GraphicsContext* gfxCtx) {
+RECOMP_PATCH void Graph_InitTHGA(GraphicsContext* gfxCtx) {
     GfxPool* pool = &gGfxPools[gfxCtx->gfxPoolIdx % 2];
     BiggerGfxPool* bigger_pool = &gBiggerGfxPools[gfxCtx->gfxPoolIdx % 2];
 
@@ -49,7 +49,7 @@ void Graph_InitTHGA(GraphicsContext* gfxCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
+RECOMP_PATCH void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
     u32 problem;
 
     gameState->unk_A0 = 0;
@@ -232,7 +232,7 @@ void* proutPrintf(void* dst, const char* fmt, u32 size) {
     return (void*)1;
 }
 
-int recomp_printf(const char* fmt, ...) {
+RECOMP_PATCH int recomp_printf(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
