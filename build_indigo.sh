@@ -29,6 +29,7 @@ rm -r out build RecompiledFuncs RecompiledPatches indigo.toml aspMain.toml njpgd
 # Run N64Recomp on the config (yes run twice)
 ./N64Recomp.exe indigo.toml
 ./N64Recomp.exe indigo.toml --dump-context
+./N64Recomp.exe patches.toml
 ./RSPRecomp.exe aspMain.toml
 ./RSPRecomp.exe njpgdspMain.toml
 

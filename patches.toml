@@ -13,3 +13,6 @@ func_reference_syms_file = "dump.toml"
 data_reference_syms_files = [ "data_dump.toml" ]
 
 strict_patch_mode = true
+
+# Tell the recompiler to write the output binary. Doing this instead of using objcopy allows the recompiler to patch MIPS32 relocs.
+output_binary_path = "patches/patches.bin"
