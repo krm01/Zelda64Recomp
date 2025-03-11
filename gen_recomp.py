@@ -324,7 +324,7 @@ class UCodeInfo:
     data_md5 : int                          # md5 of data for verif
     extra_indirect_branch_targets : tuple   # any DMEM labels that point into IMEM should be listed here
 
-def main(elf_path : str):
+def main(elf_path : str, windows_elf_path: str):
     ROM_PATH = elf_path.replace(".elf", ".z64")
     TOML_OUTNAME = "indigo.toml"
     OVERLAYS_OUTNAME = "overlays.txt"
@@ -403,7 +403,7 @@ def main(elf_path : str):
 [input]
 entrypoint = 0x{rom_header.entrypoint:08X}
 # Paths are relative to the location of this config file.
-elf_path = "{elf_path}"
+elf_path = "{windows_elf_path}"
 output_func_path = "RecompiledFuncs"
 relocatable_sections_path = "{OVERLAYS_OUTNAME}"
 recomp_include = "#include \\"recomp.h\\""
@@ -549,4 +549,4 @@ extra_indirect_branch_targets = [
             outfile.write(f"{{ {game_id}, {{ 0x{rom_hash:016X}ULL, u8\"{rom_save}\", \"{rom_title}\" }}}},\n")
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], sys.argv[2])

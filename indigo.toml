@@ -3,7 +3,7 @@
 [input]
 entrypoint = 0x80000400
 # Paths are relative to the location of this config file.
-elf_path = "lib/indigo/zelda_ocarina_mq_dbg.elf"
+elf_path = "W:\\home\\kenton\\decomp\\oot\\zelda_ocarina_mq_dbg.elf"
 output_func_path = "RecompiledFuncs"
 relocatable_sections_path = "overlays.txt"
 recomp_include = "#include \"recomp.h\""

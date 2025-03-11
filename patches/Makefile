@@ -1,5 +1,5 @@
 # TODO set these when the makefile is called
-DECOMP_PATH := ../lib/indigo
+DECOMP_PATH := "W:\\home\\kenton\\decomp\\oot"
 
 TARGET := patches.elf
 

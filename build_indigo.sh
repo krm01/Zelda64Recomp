@@ -17,14 +17,14 @@
 rm -r out build RecompiledFuncs RecompiledPatches indigo.toml aspMain.toml njpgdspMain.toml rsp/aspMain.cpp rsp/aspMain.text.bin rsp/njpgdspMain.cpp rsp/njpgdspMain.text.bin
 
 # Produce an N64 ROM to recompile
-# build indigo with `make release RECOMP=1` and then run copy-to-recomp.sh from indigo repo
-# will put the necessary files into lib/indigo/
+# build indigo with `make release RECOMP=1` or use the recomp-build.sh script in indigo
 
 # activate the python venv if not already
 . .venv/bin/activate
 
 # Generate recomp configuration from ELF file
-./.venv/bin/python3 gen_recomp.py lib/indigo/zelda_ocarina_mq_dbg.elf
+./.venv/bin/python3 gen_recomp.py "/home/kenton/decomp/oot/zelda_ocarina_mq_dbg.elf" \
+    "W:\\\\home\\\\kenton\\\\decomp\\\\oot\\\\zelda_ocarina_mq_dbg.elf"
 
 # Run N64Recomp on the config (yes run twice)
 ./N64Recomp.exe indigo.toml
